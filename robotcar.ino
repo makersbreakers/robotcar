@@ -1,55 +1,35 @@
-/*  Arduino DC Motor Control - PWM | H-Bridge | L298N
-         Example 02 - Arduino Robot Car Control
-    by Dejan Nedelkovski, www.HowToMechatronics.com
-*/
-
-#define moter1vorne 4
-#define moter1zuruck 5
-
-#define moter2vorne 7
-#define moter2zuruck 6
-
+// Map pins on L298N to Arduino
+#define m1enA 9
+#define m1in1 7
+#define m1in2 6
 
 void setup() {
-  pinMode(moter1vorne, OUTPUT);
-  pinMode(moter1zuruck, OUTPUT);
-  
-  pinMode(moter2vorne, OUTPUT);
-  pinMode(moter2zuruck, OUTPUT);
- 
-    
-}
+  // Setup pins Arduino to send signal to L298N:
+  pinMode(m1enA, OUTPUT);
+  pinMode(m1in1, OUTPUT);
+  pinMode(m1in2, OUTPUT);
+ }
 
 void loop() {
-    for (int i = 0; i < 4; i++) {
-      digitalWrite(moter1vorne, LOW);
-      digitalWrite(moter1zuruck, LOW);
-      digitalWrite(moter2vorne, HIGH);
-      digitalWrite(moter2zuruck, LOW);
-      delay(720);
-      // turn 90 degrees left
-      digitalWrite(moter1vorne, HIGH);
-      digitalWrite(moter1zuruck, LOW);
-      // Set Motor B forward
-      digitalWrite(moter2vorne, HIGH);
-      digitalWrite(moter2zuruck, LOW);
-      delay(1000);
-      //wait a second
-    }
-     for (int i = 0; i < 4; i++) {
-      digitalWrite(moter1vorne, HIGH);
-      digitalWrite(moter1zuruck, LOW);
-      digitalWrite(moter2vorne, LOW);
-      digitalWrite(moter2zuruck, LOW);
-      delay(720);
-      // turn 90 degrees left
-      // Set Motor A vorward
-      digitalWrite(moter1vorne, HIGH);
-      digitalWrite(moter1zuruck, LOW);
-      // Set Motor B forward
-      digitalWrite(moter2vorne, HIGH);
-      digitalWrite(moter2zuruck, LOW);
-      delay(1000);
-      //wait a second
-     }
+  // Turn left  
+  digitalWrite(m1in1, HIGH);
+  digitalWrite(m1in2, LOW);
+  
+  //increase speed (Question: What is a better initial value for speed?)
+  for (int speed = 0; speed < 255; speed +=5){
+    analogWrite(m1enA, speed); // Send PWM signal to motor 1
+    delay(200); // run at this speed for 200ms
+  }
+  delay(2000); // wait for 2s
+
+  //Turn right
+  digitalWrite(m1in1, LOW);
+  digitalWrite(m1in2, HIGH);
+  
+  //increase speed (Question: What is a better initial value for speed?)
+  for (int speed = 0; speed < 255; speed +=5){
+    analogWrite(m1enA, speed); // Send PWM signal to motor 1
+    delay(200); // run at this speed for 200ms
+  }
+  delay(2000); // wait for 2s
 }
